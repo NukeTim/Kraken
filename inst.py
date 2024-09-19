@@ -108,7 +108,7 @@ def main(url_zip):
     if typ=="py" and requirements_file!="None":
         print("Download requirements")
         install_req(pip_path,install_path,requirements_file)
-    run=subprocess.Popen([f"{python_path}",f"{install_path}/{main_file}"],stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    os.system(f"{python-path} {install_path}/{main_file}")
     if startup=="True":
         add_startup(install_path,main_file)
         
